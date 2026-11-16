@@ -202,19 +202,19 @@
                     </p>
                 </div>
 
-                <!-- Dados da Empresa (Ocultos até validar CNPJ) -->
+                <!-- Dados da Empresa (Ocultos até validar/consultar CNPJ) -->
                 <div id="dados-empresa-box" class="hidden bg-white border border-slate-200/90 rounded-2xl p-4 space-y-3 shadow-2xs">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                         <span class="text-xs font-bold text-emerald-900 uppercase tracking-wider">
                             <i class="fa-solid fa-id-card mr-1 text-emerald-600"></i> Dados da Empresa
                         </span>
-                        <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">
+                        <span id="modo-campos-badge" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">
                             Apenas Contato editável
                         </span>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Razão Social</label>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Razão Social *</label>
                         <input type="text" id="emp-razao" readonly required class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 font-medium cursor-not-allowed">
                     </div>
 
@@ -227,28 +227,28 @@
                             <label for="emp-contato" class="block text-[11px] font-bold text-emerald-900 mb-1">
                                 Contato (Telefone / WhatsApp) <span class="text-emerald-600">(Editável)</span> *
                             </label>
-                            <input type="text" id="emp-contato" required placeholder="(41) 997150992" class="w-full px-3 py-2 bg-emerald-50/40 border-2 border-emerald-300 focus:border-emerald-600 rounded-xl text-xs sm:text-sm text-slate-800 font-semibold focus:outline-none">
+                            <input type="text" id="emp-contato" required placeholder="(41) 99999-9999" class="w-full px-3 py-2 bg-emerald-50/40 border-2 border-emerald-300 focus:border-emerald-600 rounded-xl text-xs sm:text-sm text-slate-800 font-semibold focus:outline-none">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Endereço</label>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Endereço *</label>
                         <input type="text" id="emp-endereco" readonly required class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 cursor-not-allowed">
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div class="sm:col-span-2">
-                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Cidade</label>
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Cidade *</label>
                             <input type="text" id="emp-cidade" readonly required class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 cursor-not-allowed">
                         </div>
                         <div>
-                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">UF</label>
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">UF *</label>
                             <input type="text" id="emp-uf" readonly required maxlength="2" class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 uppercase cursor-not-allowed">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Ramo de Atividade</label>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Ramo de Atividade *</label>
                         <input type="text" id="emp-ramo" readonly required class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 cursor-not-allowed">
                     </div>
 
@@ -796,13 +796,14 @@
     <script>
         const CONFIG = {
             portalUrl: 'https://medqualividatelemedicina.lsxmedical.com/',
-            whatsappNumber: '5541999999999', // Substitua pelo número oficial (DDI + DDD + Número)
+            whatsappNumber: '5541997150992',
             sheetsWebhookUrl: '', // URL do Google Apps Script Web App para alimentar a planilha principal
             pixChave: '69.284.265/0001-65',
             cartaoCreditoUrl: '' // Deixado em aberto conforme solicitado
         };
 
         let ultimoCnpjValidado = '';
+        let consultaEmAndamento = false;
         let calculoEmpresarialAtual = { qtd: 0, unitario: 0, total: 0 };
         let calculoIndividualAtual = { dependentes: 0, totalPessoas: 1, unitario: 24.90, total: 24.90 };
 
@@ -859,7 +860,33 @@
             document.getElementById('etapa-colaboradores').classList.add('hidden');
             document.getElementById('bloco-pos-contratar-empresa').classList.add('hidden');
             document.getElementById('qtd-colaboradores').value = '';
+            configurarModoCamposEmpresa(false);
             calcularValorEmpresarial();
+        }
+
+        function configurarModoCamposEmpresa(modoManual) {
+            const idsBloqueaveis = ['emp-razao', 'emp-fantasia', 'emp-endereco', 'emp-cidade', 'emp-uf', 'emp-ramo'];
+            const badge = document.getElementById('modo-campos-badge');
+
+            idsBloqueaveis.forEach(id => {
+                const input = document.getElementById(id);
+                if (!input) return;
+                input.readOnly = !modoManual;
+                if (modoManual) {
+                    input.classList.remove('bg-slate-100/90', 'text-slate-700', 'cursor-not-allowed');
+                    input.classList.add('bg-white', 'text-slate-800', 'focus:ring-2', 'focus:ring-emerald-600', 'focus:outline-none');
+                } else {
+                    input.classList.add('bg-slate-100/90', 'text-slate-700', 'cursor-not-allowed');
+                    input.classList.remove('bg-white', 'text-slate-800', 'focus:ring-2', 'focus:ring-emerald-600', 'focus:outline-none');
+                }
+            });
+
+            if (badge) {
+                badge.textContent = modoManual ? 'Preenchimento manual liberado' : 'Apenas Contato editável';
+                badge.className = modoManual
+                    ? 'text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-semibold'
+                    : 'text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium';
+            }
         }
 
         function mascaraCNPJ(input) {
@@ -882,6 +909,108 @@
             }
         }
 
+        async function consultarBrasilAPI(cnpj) {
+            const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+            if (!res.ok) throw new Error(`BrasilAPI HTTP ${res.status}`);
+            const data = await res.json();
+            if (!data || !data.razao_social) throw new Error('BrasilAPI sem razão social');
+
+            const partesEndereco = [
+                data.descricao_tipo_de_logradouro,
+                data.logradouro,
+                data.numero,
+                data.complemento,
+                data.bairro
+            ].filter(Boolean);
+
+            return {
+                razaoSocial: data.razao_social || '',
+                nomeFantasia: data.nome_fantasia || data.razao_social || '',
+                contato: [(data.ddd_telefone_1 || '').trim(), (data.email || '').trim()].filter(Boolean).join(' • '),
+                endereco: partesEndereco.join(', '),
+                cidade: data.municipio || '',
+                uf: data.uf || '',
+                ramo: data.cnae_fiscal_descricao || ''
+            };
+        }
+
+        async function consultarMinhaReceita(cnpj) {
+            const res = await fetch(`https://minhareceita.org/${cnpj}`);
+            if (!res.ok) throw new Error(`MinhaReceita HTTP ${res.status}`);
+            const data = await res.json();
+            if (!data || (!data.razao_social && !data.nome)) throw new Error('MinhaReceita sem razão social');
+
+            const partesEndereco = [
+                data.logradouro,
+                data.numero,
+                data.complemento,
+                data.bairro
+            ].filter(Boolean);
+
+            const atividade = Array.isArray(data.cnae_fiscal_descricao)
+                ? data.cnae_fiscal_descricao[0]
+                : (data.cnae_fiscal_descricao || data.atividade_principal?.[0]?.text || '');
+
+            return {
+                razaoSocial: data.razao_social || data.nome || '',
+                nomeFantasia: data.nome_fantasia || data.fantasia || data.razao_social || data.nome || '',
+                contato: [(data.ddd_telefone_1 || data.telefone || '').trim(), (data.email || '').trim()].filter(Boolean).join(' • '),
+                endereco: partesEndereco.join(', '),
+                cidade: data.municipio || '',
+                uf: data.uf || '',
+                ramo: atividade
+            };
+        }
+
+        function consultarReceitaWSJsonp(cnpj) {
+            return new Promise((resolve, reject) => {
+                const callbackName = 'cbReceitaWS_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+                const script = document.createElement('script');
+                const timeout = setTimeout(() => {
+                    cleanup();
+                    reject(new Error('ReceitaWS timeout'));
+                }, 7000);
+
+                function cleanup() {
+                    clearTimeout(timeout);
+                    delete window[callbackName];
+                    if (script.parentNode) script.parentNode.removeChild(script);
+                }
+
+                window[callbackName] = (data) => {
+                    cleanup();
+                    if (!data || data.status === 'ERROR' || !data.nome) {
+                        reject(new Error('ReceitaWS não encontrou CNPJ'));
+                        return;
+                    }
+                    const partesEndereco = [
+                        data.logradouro,
+                        data.numero,
+                        data.complemento,
+                        data.bairro
+                    ].filter(Boolean);
+
+                    resolve({
+                        razaoSocial: data.nome || '',
+                        nomeFantasia: data.fantasia || data.nome || '',
+                        contato: [(data.telefone || '').trim(), (data.email || '').trim()].filter(Boolean).join(' • '),
+                        endereco: partesEndereco.join(', '),
+                        cidade: data.municipio || '',
+                        uf: data.uf || '',
+                        ramo: data.atividade_principal?.[0]?.text || ''
+                    });
+                };
+
+                script.onerror = () => {
+                    cleanup();
+                    reject(new Error('ReceitaWS erro de script'));
+                };
+
+                script.src = `https://www.receitaws.com.br/v1/cnpj/${cnpj}?callback=${callbackName}`;
+                document.body.appendChild(script);
+            });
+        }
+
         async function buscarCNPJ() {
             const cnpjLimpo = document.getElementById('cnpj-input').value.replace(/\D/g, '');
             const statusEl = document.getElementById('cnpj-status');
@@ -894,53 +1023,71 @@
                 return;
             }
 
+            if (consultaEmAndamento) return;
             if (cnpjLimpo === ultimoCnpjValidado && !document.getElementById('dados-empresa-box').classList.contains('hidden')) {
                 return;
             }
 
+            consultaEmAndamento = true;
             btn.disabled = true;
             statusEl.textContent = 'Validando e consultando dados do CNPJ...';
             statusEl.className = 'text-[11px] text-emerald-700 font-medium mt-2';
 
-            try {
-                const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpjLimpo}`);
-                if (!res.ok) throw new Error('CNPJ não encontrado');
-                const data = await res.json();
+            const fontes = [
+                { nome: 'BrasilAPI', fn: () => consultarBrasilAPI(cnpjLimpo) },
+                { nome: 'Minha Receita', fn: () => consultarMinhaReceita(cnpjLimpo) },
+                { nome: 'ReceitaWS', fn: () => consultarReceitaWSJsonp(cnpjLimpo) }
+            ];
 
-                document.getElementById('emp-razao').value = data.razao_social || '';
-                document.getElementById('emp-fantasia').value = data.nome_fantasia || data.razao_social || '';
+            let empresa = null;
+            let fonteUsada = '';
 
-                const tel = (data.ddd_telefone_1 || '').trim();
-                const email = (data.email || '').trim();
-                document.getElementById('emp-contato').value = [tel, email].filter(Boolean).join(' • ');
+            for (const fonte of fontes) {
+                try {
+                    empresa = await fonte.fn();
+                    if (empresa && empresa.razaoSocial) {
+                        fonteUsada = fonte.nome;
+                        break;
+                    }
+                } catch (err) {
+                    console.warn(`Falha em ${fonte.nome}:`, err);
+                }
+            }
 
-                const partesEndereco = [
-                    data.descricao_tipo_de_logradouro,
-                    data.logradouro,
-                    data.numero,
-                    data.complemento,
-                    data.bairro
-                ].filter(Boolean);
-                document.getElementById('emp-endereco').value = partesEndereco.join(', ');
-                document.getElementById('emp-cidade').value = data.municipio || '';
-                document.getElementById('emp-uf').value = data.uf || '';
-                document.getElementById('emp-ramo').value = data.cnae_fiscal_descricao || '';
+            document.getElementById('dados-corretos').checked = false;
+            document.getElementById('etapa-colaboradores').classList.add('hidden');
+            document.getElementById('bloco-pos-contratar-empresa').classList.add('hidden');
+            document.getElementById('dados-empresa-box').classList.remove('hidden');
+
+            if (empresa) {
+                configurarModoCamposEmpresa(false);
+                document.getElementById('emp-razao').value = empresa.razaoSocial;
+                document.getElementById('emp-fantasia').value = empresa.nomeFantasia;
+                document.getElementById('emp-contato').value = empresa.contato;
+                document.getElementById('emp-endereco').value = empresa.endereco;
+                document.getElementById('emp-cidade').value = empresa.cidade;
+                document.getElementById('emp-uf').value = empresa.uf;
+                document.getElementById('emp-ramo').value = empresa.ramo;
 
                 ultimoCnpjValidado = cnpjLimpo;
-                document.getElementById('dados-corretos').checked = false;
-                document.getElementById('etapa-colaboradores').classList.add('hidden');
-                document.getElementById('bloco-pos-contratar-empresa').classList.add('hidden');
-                document.getElementById('dados-empresa-box').classList.remove('hidden');
-
-                statusEl.textContent = 'CNPJ validado! Confira os dados exibidos abaixo e marque a confirmação.';
+                statusEl.textContent = `CNPJ validado via ${fonteUsada}! Confira os dados e marque a confirmação.`;
                 statusEl.className = 'text-[11px] text-emerald-700 font-semibold mt-2';
-            } catch (err) {
-                resetarEtapasEmpresarial();
-                statusEl.textContent = 'Não foi possível validar este CNPJ. Confira o número ou fale conosco no WhatsApp.';
-                statusEl.className = 'text-[11px] text-red-600 font-medium mt-2';
-            } finally {
-                btn.disabled = false;
+            } else {
+                configurarModoCamposEmpresa(true);
+                document.getElementById('emp-razao').value = '';
+                document.getElementById('emp-fantasia').value = '';
+                document.getElementById('emp-endereco').value = '';
+                document.getElementById('emp-cidade').value = '';
+                document.getElementById('emp-uf').value = '';
+                document.getElementById('emp-ramo').value = '';
+
+                ultimoCnpjValidado = cnpjLimpo;
+                statusEl.textContent = 'As consultas automáticas não retornaram este CNPJ no momento. Preencha os dados manualmente abaixo e marque a confirmação.';
+                statusEl.className = 'text-[11px] text-amber-700 font-semibold mt-2';
             }
+
+            consultaEmAndamento = false;
+            btn.disabled = false;
         }
 
         function alternarEtapaVidas() {
