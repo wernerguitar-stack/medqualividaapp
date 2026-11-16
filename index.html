@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemedicina - MedQualiVida</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mqv: {
+                            green: '#047857',
+                            greenDark: '#064E3B',
+                            greenLight: '#10B981',
+                            silver: '#CBD5E1',
+                            silverLight: '#F1F5F9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .bg-green-silver-gradient {
+            background: linear-gradient(135deg, #cbd5e1 0%, #f1f5f9 32%, #d1fae5 72%, #6ee7b7 100%);
+        }
+        .btn-green-gradient {
+            background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%);
+        }
+        .btn-green-gradient:hover {
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+        }
+        .card-silver-border {
+            border: 1px solid rgba(203, 213, 225, 0.9);
+            box-shadow: 0 20px 35px -10px rgba(6, 78, 59, 0.14), 0 8px 15px -6px rgba(100, 116, 139, 0.12);
+        }
+    </style>
+</head>
+<body class="bg-green-silver-gradient text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-600 selection:text-white">
+
+    <!-- Top Bar -->
+    <header class="w-full bg-white/85 backdrop-blur-md border-b border-slate-200/80 shadow-xs py-3.5 px-4 flex justify-center items-center relative z-20">
+        <span class="text-xs font-bold text-emerald-900 tracking-widest uppercase flex items-center gap-2">
+            <i class="fa-solid fa-staff-snake text-emerald-600"></i>
+            Portal Oficial de Telemedicina
+        </span>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
+
+        <!-- ================= TELA 1: CAPA MEDQUALIVIDA ================= -->
+        <div id="screen-capa" class="w-full max-w-md bg-gradient-to-b from-white via-white to-slate-50/95 rounded-3xl card-silver-border p-6 sm:p-8 text-center transition-all duration-300">
+
+            <!-- Logo Principal MedQualiVida -->
+            <div class="mt-1 mb-6 flex justify-center">
+                <div class="w-full max-w-[340px] h-36 sm:h-44 bg-gradient-to-br from-slate-50 via-white to-emerald-50/60 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-center p-3 overflow-hidden">
+                    <img id="logo-preview" src="logo-medqualivida.png" alt="Logo MedQualiVida" class="w-full h-full object-contain drop-shadow-xs" onerror="this.src='https://via.placeholder.com/320x150/f8fafc/047857?text=MedQualiVida'">
+                </div>
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-950 tracking-tight">
+                Telemedicina 24h
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1 mb-6 font-normal">
+                Saúde digital rápida, segura e sem sair de casa
+            </p>
+
+            <!-- Botão Principal: Acessar Telemedicina -->
+            <div class="mb-6">
+                <button type="button" onclick="goToPortal()" class="w-full btn-green-gradient text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-emerald-700/25 hover:shadow-emerald-700/40 transform hover:-translate-y-0.5 transition-all flex items-center justify-center space-x-3 text-base sm:text-lg">
+                    <i class="fa-solid fa-video text-emerald-200"></i>
+                    <span>Acessar Telemedicina</span>
+                </button>
+                <p class="text-[11px] text-slate-400 mt-2">
+                    Já possui plano ativo? Clique acima para iniciar seu atendimento.
+                </p>
+            </div>
+
+            <!-- Divisória Prata -->
+            <div class="relative flex py-2 items-center mb-5">
+                <div class="flex-grow border-t border-slate-200"></div>
+                <span class="shrink mx-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    Ainda não tem nosso plano?
+                </span>
+                <div class="flex-grow border-t border-slate-200"></div>
+            </div>
+
+            <!-- Seção: Contrate Aqui -->
+            <div class="bg-gradient-to-br from-slate-100/90 via-slate-50 to-emerald-50/50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 mb-6 shadow-inner">
+                <div class="flex items-center justify-center gap-1.5 mb-1">
+                    <i class="fa-solid fa-file-signature text-emerald-600 text-sm"></i>
+                    <h2 class="text-sm sm:text-base font-extrabold text-emerald-950 uppercase tracking-wide">
+                        Contrate aqui
+                    </h2>
+                </div>
+                <p class="text-xs text-slate-500 mb-4">
+                    Escolha a modalidade ideal para você ou sua equipe:
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button type="button" onclick="abrirEmpresarial()" class="group bg-white hover:bg-emerald-50/70 border-2 border-slate-200 hover:border-emerald-600 rounded-xl p-3.5 transition-all shadow-xs hover:shadow-md flex flex-col items-center text-center">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 group-hover:bg-emerald-100 text-slate-600 group-hover:text-emerald-700 flex items-center justify-center mb-2 transition-colors">
+                            <i class="fa-solid fa-building text-base"></i>
+                        </div>
+                        <span class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-emerald-900">
+                            Plano Empresarial
+                        </span>
+                        <span class="text-[11px] text-slate-400 mt-0.5 leading-tight">
+                            Para empresas e colaboradores
+                        </span>
+                    </button>
+
+                    <button type="button" onclick="abrirTela('screen-individual')" class="group bg-white hover:bg-emerald-50/70 border-2 border-slate-200 hover:border-emerald-600 rounded-xl p-3.5 transition-all shadow-xs hover:shadow-md flex flex-col items-center text-center">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 group-hover:bg-emerald-100 text-slate-600 group-hover:text-emerald-700 flex items-center justify-center mb-2 transition-colors">
+                            <i class="fa-solid fa-user text-base"></i>
+                        </div>
+                        <span class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-emerald-900">
+                            Plano Individual
+                        </span>
+                        <span class="text-[11px] text-slate-400 mt-0.5 leading-tight">
+                            Contratação para você
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Botão Benefícios do Plano -->
+            <div class="mb-6">
+                <button type="button" onclick="toggleModal('benefits-modal', true)" class="w-full bg-gradient-to-r from-slate-100 via-white to-slate-100 hover:from-emerald-50 hover:to-emerald-50 text-emerald-900 border border-slate-300 hover:border-emerald-400 font-semibold py-2.5 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center space-x-2 text-xs sm:text-sm">
+                    <i class="fa-solid fa-heart-pulse text-emerald-600"></i>
+                    <span>Benefícios do Plano</span>
+                </button>
+            </div>
+
+            <!-- Rodapé da Capa -->
+            <footer class="pt-4 border-t border-slate-200/80 flex flex-col items-center justify-center text-[11px] text-slate-400 space-y-2">
+                <a href="#" onclick="abrirWhatsApp(event, 'Olá! Gostaria de falar com a equipe MedQualiVida.')" class="inline-flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-semibold px-3 py-1.5 rounded-full transition">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+                    <span>Fale conosco</span>
+                </a>
+                <p>
+                    Desenvolvido por
+                    <a href="https://ws4tech.com.br" target="_blank" rel="noopener noreferrer" class="font-bold text-emerald-700 hover:text-emerald-900 underline decoration-emerald-300 hover:decoration-emerald-700 transition">
+                        ws4tech
+                    </a>
+                </p>
+                <p class="text-[10px] text-slate-400 font-medium">MedQualiVida • Todos os direitos reservados</p>
+            </footer>
+        </div>
+
+        <!-- ================= TELA 2: PLANO EMPRESARIAL ================= -->
+        <div id="screen-empresarial" class="w-full max-w-xl bg-gradient-to-b from-white via-white to-slate-50/95 rounded-3xl card-silver-border p-6 sm:p-8 hidden transition-all duration-300">
+
+            <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-200/80">
+                <button type="button" onclick="abrirTela('screen-capa')" class="text-slate-500 hover:text-emerald-800 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Voltar</span>
+                </button>
+                <div class="text-center">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block">Contratação Corporativa</span>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-emerald-950">Plano Empresarial</h2>
+                </div>
+                <div class="w-14"></div>
+            </div>
+
+            <form id="form-empresarial" onsubmit="finalizarEnvioEmpresarial(event)" class="space-y-4 text-left">
+
+                <!-- Campo CNPJ + Validação -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                    <label for="cnpj-input" class="block text-xs font-bold text-emerald-950 uppercase tracking-wide mb-1.5">
+                        CNPJ da Empresa <span class="text-red-500">*</span>
+                    </label>
+                    <div class="flex gap-2">
+                        <input
+                            type="text"
+                            id="cnpj-input"
+                            placeholder="00.000.000/0000-00"
+                            maxlength="18"
+                            required
+                            oninput="aoDigitarCNPJ(this)"
+                            onblur="buscarCNPJ()"
+                            class="flex-grow px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-medium focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                        >
+                        <button
+                            type="button"
+                            id="btn-buscar-cnpj"
+                            onclick="buscarCNPJ()"
+                            class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl shadow-xs transition flex items-center gap-1.5 shrink-0"
+                        >
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Validar CNPJ</span>
+                        </button>
+                    </div>
+                    <p id="cnpj-status" class="text-[11px] text-slate-500 mt-2">
+                        Digite o CNPJ e clique em Validar CNPJ para liberar e preencher os dados da empresa.
+                    </p>
+                </div>
+
+                <!-- Dados da Empresa (Ocultos até validar CNPJ) -->
+                <div id="dados-empresa-box" class="hidden bg-white border border-slate-200/90 rounded-2xl p-4 space-y-3 shadow-2xs">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <span class="text-xs font-bold text-emerald-900 uppercase tracking-wider">
+                            <i class="fa-solid fa-id-card mr-1 text-emerald-600"></i> Dados da Empresa
+                        </span>
+                        <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">
+                            Apenas Contato editável
+                        </span>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Razão Social</label>
+                        <input type="text" id="emp-razao" readonly required class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 font-medium cursor-not-allowed">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Nome Fantasia</label>
+                            <input type="text" id="emp-fantasia" readonly class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label for="emp-contato" class="block text-[11px] font-bold text-emerald-900 mb-1">
+                                Contato (Telefone / WhatsApp) <span class="text-emerald-600">(Editável)</span> *
+                            </label>
+                            <input type="text" id="emp-contato" required placeholder="(41) 99999-9999" class="w-full px-3 py-2 bg-emerald-50/40 border-2 border-emerald-300 focus:border-emerald-600 rounded-xl text-xs sm:text-sm text-slate-800 font-semibold focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Endereço</label>
+                        <input type="text" id="emp-endereco" readonly required class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 cursor-not-allowed">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="sm:col-span-2">
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Cidade</label>
+                            <input type="text" id="emp-cidade" readonly required class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">UF</label>
+                            <input type="text" id="emp-uf" readonly required maxlength="2" class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 uppercase cursor-not-allowed">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Ramo de Atividade</label>
+                        <input type="text" id="emp-ramo" readonly required class="w-full px-3 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 cursor-not-allowed">
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100">
+                        <label class="flex items-center gap-2.5 cursor-pointer select-none bg-emerald-50/70 hover:bg-emerald-50 border border-emerald-200/80 rounded-xl p-3 transition">
+                            <input type="checkbox" id="dados-corretos" onchange="alternarEtapaVidas()" class="w-4 h-4 accent-emerald-700 rounded cursor-pointer">
+                            <span class="text-xs sm:text-sm font-bold text-emerald-950">
+                                Seus dados estão corretos? Desejo prosseguir.
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Etapa Colaboradores & Cálculo Escalonado -->
+                <div id="etapa-colaboradores" class="hidden bg-gradient-to-br from-slate-100 via-white to-emerald-50/60 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-4 transition-all">
+                    <div>
+                        <label for="qtd-colaboradores" class="block text-xs sm:text-sm font-bold text-emerald-950 mb-1">
+                            Número de colaboradores para o plano <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="number"
+                            id="qtd-colaboradores"
+                            min="3"
+                            step="1"
+                            placeholder="Mínimo 3 por CNPJ (Ex.: 25)"
+                            oninput="calcularValorEmpresarial()"
+                            class="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                        >
+                        <p id="aviso-valor-pendente" class="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-info text-emerald-600"></i>
+                            <span>O número mínimo por CNPJ é 3. O valor será mostrado após o preenchimento do número de colaboradores.</span>
+                        </p>
+                        <p id="erro-minimo-cnpj" class="hidden text-xs text-red-600 font-semibold mt-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>O número mínimo por CNPJ é de 3 colaboradores.</span>
+                        </p>
+                    </div>
+
+                    <!-- Card de Resultado -->
+                    <div id="resumo-valor-empresa" class="hidden bg-emerald-950 text-white rounded-2xl p-4 shadow-md">
+                        <div class="flex items-center justify-between text-xs text-emerald-200 mb-1">
+                            <span id="faixa-unitaria-empresa">Valor unitário: R$ 14,90 / colaborador</span>
+                            <span id="badge-vidas" class="bg-emerald-800 text-emerald-100 px-2 py-0.5 rounded-full font-semibold">0 vidas</span>
+                        </div>
+                        <div class="flex items-baseline justify-between mt-1">
+                            <span class="text-xs uppercase tracking-wider text-emerald-200 font-semibold">Mensalidade e Adesão</span>
+                            <span id="valor-total-empresa" class="text-2xl sm:text-3xl font-extrabold text-emerald-300">R$ 0,00</span>
+                        </div>
+                        <p class="text-[11px] text-emerald-200/85 mt-2 leading-relaxed">
+                            Faixas por vida: 3 a 100 (R$ 14,90) • 101 a 500 (R$ 13,90) • 501 a 1000 (R$ 12,90) • Acima de 1000 (R$ 10,90).
+                        </p>
+                    </div>
+
+                    <!-- Botão Contratar -->
+                    <button
+                        type="button"
+                        id="btn-contratar-empresa"
+                        disabled
+                        onclick="abrirFluxoPlanilhaEmpresa()"
+                        class="w-full btn-green-gradient disabled:opacity-45 disabled:cursor-not-allowed text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg shadow-emerald-700/25 transition-all flex items-center justify-center gap-2 text-base"
+                    >
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>Contratar Plano Empresarial</span>
+                    </button>
+
+                    <!-- Botão Pequeno: Mais Informações -->
+                    <div class="text-center pt-1">
+                        <button
+                            type="button"
+                            onclick="toggleModal('empresa-info-modal', true)"
+                            class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 hover:text-emerald-950 underline decoration-emerald-400 hover:decoration-emerald-800 transition py-1 px-2"
+                        >
+                            <i class="fa-solid fa-circle-plus text-emerald-600"></i>
+                            <span>Mais informações sobre vantagens e NR-01</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bloco Pós-Contratar: Regras de Ativação, Adesão e Envio da Planilha -->
+                <div id="bloco-pos-contratar-empresa" class="hidden bg-white border-2 border-emerald-500/70 rounded-2xl p-4 sm:p-5 space-y-4 shadow-md">
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-xs text-emerald-950 space-y-1.5 leading-relaxed">
+                        <p class="font-bold text-emerald-900 flex items-center gap-1.5">
+                            <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i>
+                            <span>Ativação, Adesão e Vencimentos</span>
+                        </p>
+                        <p>
+                            Seu plano será ativado em <strong>até 24h</strong> após o <strong>cadastro dos colaboradores</strong> e o <strong>pagamento da fatura da adesão</strong>.
+                        </p>
+                        <p>
+                            O valor da <strong>adesão é igual ao da mensalidade</strong> (<strong id="adesao-valor-texto">R$ 0,00</strong>). Para começar a utilizar, é obrigatório ter o cadastro realizado e o pagamento da adesão concluído.
+                        </p>
+                        <p>
+                            As faturas dos meses seguintes terão vencimento sempre <strong>30 dias após a efetivação dos colaboradores</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Importação de Planilha + Download do Modelo -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <label for="planilha-empresa" class="text-xs sm:text-sm font-bold text-emerald-950">
+                                Coloque aqui sua planilha de colaboradores <span class="text-red-500">*</span>
+                            </label>
+                            <button
+                                type="button"
+                                onclick="baixarModeloPlanilha()"
+                                class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg transition"
+                            >
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                                <span>Clique aqui para fazer download do modelo</span>
+                            </button>
+                        </div>
+
+                        <input
+                            type="file"
+                            id="planilha-empresa"
+                            accept=".csv,.xlsx,.xls"
+                            required
+                            class="block w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-700 file:text-white hover:file:bg-emerald-800 cursor-pointer bg-white border border-slate-300 rounded-xl p-1.5"
+                        >
+                        <p class="text-[11px] text-slate-500">
+                            Formatos aceitos: CSV ou planilha exportada no modelo padrão para alimentação da planilha principal no Google Sheets.
+                        </p>
+                    </div>
+
+                    <button
+                        type="submit"
+                        id="btn-enviar-empresa-final"
+                        class="w-full btn-green-gradient text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base"
+                    >
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Enviar Cadastro e Planilha</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Rodapé Empresarial -->
+            <footer class="mt-6 pt-4 border-t border-slate-200/80 flex flex-col items-center justify-center text-[11px] text-slate-400 space-y-2">
+                <a href="#" onclick="abrirWhatsApp(event, 'Olá! Tenho interesse no Plano Empresarial MedQualiVida.')" class="inline-flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-semibold px-3 py-1.5 rounded-full transition">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+                    <span>Fale conosco</span>
+                </a>
+                <p>
+                    Desenvolvido por
+                    <a href="https://ws4tech.com.br" target="_blank" rel="noopener noreferrer" class="font-bold text-emerald-700 hover:text-emerald-900 underline decoration-emerald-300 hover:decoration-emerald-700 transition">
+                        ws4tech
+                    </a>
+                </p>
+            </footer>
+        </div>
+
+        <!-- ================= TELA 3: PLANO INDIVIDUAL (RESUMO & VALORES) ================= -->
+        <div id="screen-individual" class="w-full max-w-xl bg-gradient-to-b from-white via-white to-slate-50/95 rounded-3xl card-silver-border p-6 sm:p-8 hidden transition-all duration-300">
+
+            <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-200/80">
+                <button type="button" onclick="abrirTela('screen-capa')" class="text-slate-500 hover:text-emerald-800 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Voltar</span>
+                </button>
+                <div class="text-center">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block">Assinatura Pessoal</span>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-emerald-950">Plano Individual</h2>
+                </div>
+                <div class="w-14"></div>
+            </div>
+
+            <!-- Vantagens -->
+            <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-4 mb-5">
+                <h3 class="text-xs sm:text-sm font-extrabold text-emerald-950 mb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-shield-heart text-emerald-600"></i>
+                    <span>Vantagens do Plano Individual</span>
+                </h3>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-emerald-950 font-medium">
+                    <li>✔️ Médico 24h (7 dias na semana)</li>
+                    <li>✔️ Sem fila de espera para triagem</li>
+                    <li>✔️ +30 especialidades agendadas</li>
+                    <li>✔️ Receitas e atestados digitais</li>
+                    <li>✔️ Pronto atendimento psicológico</li>
+                    <li>✔️ Orientação nutricional</li>
+                </ul>
+            </div>
+
+            <!-- Regras de Preço -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-4 text-left">
+                <div class="bg-white border border-slate-200 rounded-xl p-3.5 text-xs text-slate-700 space-y-1">
+                    <p><strong>• 1 pessoa (Titular):</strong> <strong class="text-emerald-700">R$ 24,90</strong></p>
+                    <p><strong>• A partir de 2 pessoas (até no máximo 10 pessoas no total):</strong> <strong class="text-emerald-700">R$ 19,90 por pessoa</strong> (incluindo o titular)</p>
+                </div>
+
+                <div>
+                    <label for="qtd-dependentes" class="block text-xs sm:text-sm font-bold text-emerald-950 mb-1">
+                        Deseja incluir dependentes? (Máx. 9 dependentes • Total até 10 pessoas)
+                    </label>
+                    <input
+                        type="number"
+                        id="qtd-dependentes"
+                        min="0"
+                        max="9"
+                        step="1"
+                        value="0"
+                        oninput="atualizarResumoIndividual()"
+                        class="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                    >
+                    <p id="erro-max-pessoas" class="hidden text-xs text-red-600 font-semibold mt-1.5">
+                        O plano individual permite no máximo 10 pessoas no total (1 titular + até 9 dependentes).
+                    </p>
+                </div>
+
+                <!-- Resumo -->
+                <div class="bg-emerald-950 text-white rounded-2xl p-4 shadow-md">
+                    <div class="flex items-center justify-between text-xs text-emerald-200 mb-1">
+                        <span id="ind-resumo-vidas">1 pessoa (Titular) • R$ 24,90/pessoa</span>
+                        <span id="ind-total-pessoas-badge" class="bg-emerald-800 px-2 py-0.5 rounded-full font-semibold">1 de 10 pessoas</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-1">
+                        <span class="text-xs uppercase tracking-wider text-emerald-200 font-semibold">Total Mensal</span>
+                        <span id="ind-resumo-valor" class="text-2xl sm:text-3xl font-extrabold text-emerald-300">R$ 24,90</span>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    id="btn-quero-contratar-ind"
+                    onclick="abrirCadastroPessoasIndividual()"
+                    class="w-full btn-green-gradient text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg shadow-emerald-700/25 transition-all flex items-center justify-center gap-2 text-base"
+                >
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Quero Contratar</span>
+                </button>
+            </div>
+
+            <!-- Rodapé Individual -->
+            <footer class="mt-6 pt-4 border-t border-slate-200/80 flex flex-col items-center justify-center text-[11px] text-slate-400 space-y-2">
+                <a href="#" onclick="abrirWhatsApp(event, 'Olá! Gostaria de tirar dúvidas sobre o Plano Individual MedQualiVida.')" class="inline-flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-semibold px-3 py-1.5 rounded-full transition">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+                    <span>Fale conosco</span>
+                </a>
+                <p>
+                    Desenvolvido por
+                    <a href="https://ws4tech.com.br" target="_blank" rel="noopener noreferrer" class="font-bold text-emerald-700 hover:text-emerald-900 underline decoration-emerald-300 hover:decoration-emerald-700 transition">
+                        ws4tech
+                    </a>
+                </p>
+            </footer>
+        </div>
+
+        <!-- ================= TELA 3B: CADASTRO TITULAR + DEPENDENTES ================= -->
+        <div id="screen-individual-cadastro" class="w-full max-w-xl bg-gradient-to-b from-white via-white to-slate-50/95 rounded-3xl card-silver-border p-6 sm:p-8 hidden transition-all duration-300">
+
+            <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-200/80">
+                <button type="button" onclick="abrirTela('screen-individual')" class="text-slate-500 hover:text-emerald-800 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Voltar</span>
+                </button>
+                <div class="text-center">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block">Passo 1 de 2</span>
+                    <h2 class="text-lg font-extrabold text-emerald-950">Cadastro dos Beneficiários</h2>
+                </div>
+                <div class="w-14"></div>
+            </div>
+
+            <form id="form-pessoas-individual" onsubmit="irParaPagamentoIndividual(event)" class="space-y-5 text-left">
+
+                <!-- Bloco Titular -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-2xs">
+                    <h3 class="text-xs sm:text-sm font-extrabold text-emerald-950 uppercase tracking-wide border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-user-check text-emerald-600 mr-1"></i> Dados do Titular
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo *</label>
+                            <input type="text" id="tit-nome" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Idade *</label>
+                            <input type="number" id="tit-idade" min="18" max="120" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">CPF *</label>
+                            <input type="text" id="tit-cpf" required maxlength="14" placeholder="000.000.000-00" oninput="mascaraCPF(this)" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">E-mail *</label>
+                            <input type="email" id="tit-email" required placeholder="seu@email.com" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Endereço do Titular com Validação de CEP -->
+                    <div class="pt-3 border-t border-slate-100 space-y-3">
+                        <span class="block text-xs font-bold text-emerald-900">Endereço do Titular (Validação por CEP)</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">CEP *</label>
+                                <input type="text" id="tit-cep" required maxlength="9" placeholder="00000-000" oninput="mascaraCEP(this)" onblur="consultarCEPTitular(this.value)" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Endereço / Logradouro *</label>
+                                <input type="text" id="tit-endereco" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                            </div>
+                        </div>
+                        <p id="cep-tit-status" class="text-[11px] text-slate-500">Digite o CEP para preencher o endereço automaticamente.</p>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Número *</label>
+                                <input type="text" id="tit-numero" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Bairro *</label>
+                                <input type="text" id="tit-bairro" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Cidade *</label>
+                                <input type="text" id="tit-cidade" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">UF *</label>
+                                <input type="text" id="tit-uf" required maxlength="2" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm uppercase focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Container Dinâmico de Dependentes -->
+                <div id="container-dependentes" class="space-y-3"></div>
+
+                <button type="submit" class="w-full btn-green-gradient text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 text-base">
+                    <span>Prosseguir para Pagamento</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- ================= TELA 3C: PAGAMENTO & COMPROVANTE INDIVIDUAL ================= -->
+        <div id="screen-individual-pagamento" class="w-full max-w-xl bg-gradient-to-b from-white via-white to-slate-50/95 rounded-3xl card-silver-border p-6 sm:p-8 hidden transition-all duration-300">
+
+            <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-200/80">
+                <button type="button" onclick="abrirTela('screen-individual-cadastro')" class="text-slate-500 hover:text-emerald-800 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Voltar</span>
+                </button>
+                <div class="text-center">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block">Passo 2 de 2</span>
+                    <h2 class="text-lg font-extrabold text-emerald-950">Opções de Pagamento</h2>
+                </div>
+                <div class="w-14"></div>
+            </div>
+
+            <form id="form-pagamento-individual" onsubmit="finalizarIndividualComComprovante(event)" class="space-y-4 text-left">
+
+                <!-- Resumo do Valor -->
+                <div class="bg-emerald-950 text-white rounded-2xl p-4 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-emerald-200 block">Valor do Plano Individual</span>
+                        <span id="pag-ind-resumo-pessoas" class="text-[11px] text-emerald-300">1 pessoa</span>
+                    </div>
+                    <span id="pag-ind-valor" class="text-2xl font-extrabold text-emerald-300">R$ 24,90</span>
+                </div>
+
+                <!-- Opção 1: PIX -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-2.5">
+                    <label class="flex items-center gap-2.5 cursor-pointer font-bold text-sm text-emerald-950">
+                        <input type="radio" name="metodo_pag_ind" value="PIX" checked onchange="alternarMetodoPagamentoInd()" class="accent-emerald-700">
+                        <i class="fa-brands fa-pix text-emerald-600"></i>
+                        <span>Pagamento via PIX</span>
+                    </label>
+                    <div id="box-pix-ind" class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-xs text-emerald-950 space-y-2">
+                        <p class="font-semibold">Chave PIX (CNPJ):</p>
+                        <div class="flex items-center justify-between gap-2 bg-white border border-emerald-300 rounded-xl px-3 py-2">
+                            <span id="chave-pix-texto" class="font-mono font-bold text-sm text-emerald-900 select-all">69.284.265/0001-65</span>
+                            <button type="button" onclick="copiarChavePix()" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shrink-0">
+                                <i class="fa-regular fa-copy mr-1"></i> Copiar
+                            </button>
+                        </div>
+                        <p id="pix-copiado-msg" class="hidden text-[11px] text-emerald-700 font-bold">Chave PIX copiada!</p>
+                    </div>
+                </div>
+
+                <!-- Opção 2: Cartão de Crédito (Link em aberto por enquanto) -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-2.5">
+                    <label class="flex items-center gap-2.5 cursor-pointer font-bold text-sm text-emerald-950">
+                        <input type="radio" name="metodo_pag_ind" value="Cartao de Credito" onchange="alternarMetodoPagamentoInd()" class="accent-emerald-700">
+                        <i class="fa-regular fa-credit-card text-emerald-600"></i>
+                        <span>Cartão de Crédito</span>
+                    </label>
+                    <div id="box-cartao-ind" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs text-slate-700 space-y-2">
+                        <p>Link de pagamento com cartão será configurado em breve.</p>
+                        <a id="link-cartao-credito" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-emerald-700 font-bold underline">
+                            <span>Acessar link de pagamento (em aberto)</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Envio do Comprovante -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <label for="comprovante-ind" class="block text-xs sm:text-sm font-bold text-emerald-950">
+                        Envio do Comprovante de Pagamento <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="file"
+                        id="comprovante-ind"
+                        accept="image/*,.pdf"
+                        required
+                        class="block w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-700 file:text-white hover:file:bg-emerald-800 cursor-pointer bg-white border border-slate-300 rounded-xl p-1.5"
+                    >
+                </div>
+
+                <button type="submit" class="w-full btn-green-gradient text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 text-base">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Enviar Comprovante e Concluir</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- ================= TELA 4: CONCLUSÃO / CONFIRMAÇÃO ================= -->
+        <div id="screen-sucesso" class="w-full max-w-md bg-white rounded-3xl card-silver-border p-6 sm:p-8 text-center hidden transition-all duration-300">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-xs">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h2 id="sucesso-titulo" class="text-2xl font-extrabold text-emerald-950 mb-2">Cadastro Enviado!</h2>
+            <div id="sucesso-texto" class="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed space-y-2.5 text-left bg-emerald-50/60 border border-emerald-200/80 rounded-2xl p-4"></div>
+            <button type="button" onclick="abrirTela('screen-capa')" class="w-full btn-green-gradient text-white font-bold py-3 px-6 rounded-xl transition text-sm">
+                Voltar à Página Inicial
+            </button>
+        </div>
+
+    </main>
+
+    <!-- ================= MODAL: MAIS INFORMAÇÕES EMPRESARIAL ================= -->
+    <div id="empresa-info-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4" onclick="if(event.target === this) toggleModal('empresa-info-modal', false)">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[88vh] flex flex-col overflow-hidden border border-slate-200">
+            <div class="bg-gradient-to-r from-emerald-900 to-emerald-700 text-white px-5 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-briefcase-medical text-emerald-300"></i>
+                    <h3 class="font-bold text-sm sm:text-base">Vantagens do Plano Empresarial & NR-01</h3>
+                </div>
+                <button type="button" onclick="toggleModal('empresa-info-modal', false)" class="text-white/80 hover:text-white p-1 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto space-y-4 text-left text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5">
+                    <h4 class="font-bold text-emerald-950 mb-1">
+                        <i class="fa-solid fa-scale-balanced text-emerald-600 mr-1"></i> Alinhamento com a Nova NR-01 e Saúde Ocupacional
+                    </h4>
+                    <p class="text-slate-700">
+                        Apoia o cuidado contínuo com a saúde física e emocional dos colaboradores — incluindo apoio psicológico — fortalecendo a prevenção, o bem-estar no trabalho e as boas práticas alinhadas à <strong>NR-01</strong>.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-1.5">
+                    <h4 class="font-bold text-emerald-950">
+                        <i class="fa-solid fa-chart-line text-emerald-600 mr-1"></i> Benefícios e Comodidade para a Empresa
+                    </h4>
+                    <ul class="space-y-1 text-slate-700 font-medium">
+                        <li>✔️ <strong>Redução do absenteísmo:</strong> triagem e orientação médica rápida sem afastamentos desnecessários.</li>
+                        <li>✔️ <strong>Comodidade:</strong> atendimento 24h e mais de 30 especialidades agendadas.</li>
+                        <li>✔️ <strong>Prazo de ativação:</strong> em até <strong>24h</strong> após o envio do cadastro/planilha dos colaboradores e pagamento da adesão.</li>
+                    </ul>
+                </div>
+
+                <div class="bg-emerald-50/70 border border-emerald-200/90 rounded-xl p-3.5">
+                    <h4 class="font-bold text-emerald-950 mb-1">
+                        <i class="fa-solid fa-file-excel text-emerald-600 mr-1"></i> Cadastro via Planilha
+                    </h4>
+                    <p class="text-slate-700">
+                        Basta preencher a planilha modelo e anexar na etapa de contratação para alimentar o cadastro da empresa com agilidade.
+                    </p>
+                </div>
+            </div>
+
+            <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex justify-end">
+                <button type="button" onclick="toggleModal('empresa-info-modal', false)" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold py-2 px-5 rounded-xl transition">
+                    Entendi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: BENEFÍCIOS DO PLANO ================= -->
+    <div id="benefits-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4" onclick="if(event.target === this) toggleModal('benefits-modal', false)">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[88vh] flex flex-col overflow-hidden border border-slate-200">
+            <div class="bg-gradient-to-r from-emerald-900 to-emerald-700 text-white px-5 py-4 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-heart-pulse text-emerald-300"></i>
+                    <h3 class="font-bold text-base">Benefícios Atendidos no Plano</h3>
+                </div>
+                <button type="button" onclick="toggleModal('benefits-modal', false)" class="text-white/80 hover:text-white p-1 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-5 overflow-y-auto space-y-4 text-left text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5">
+                    <p class="font-bold text-emerald-900 mb-1.5">
+                        <i class="fa-solid fa-clock text-emerald-600 mr-1"></i> Atendimento 24 horas por 7 dias (Fila sem agendamento):
+                    </p>
+                    <ul class="space-y-1 text-emerald-950 font-medium pl-1">
+                        <li>✔️ Clínico Geral</li>
+                        <li>✔️ Médico da Família</li>
+                        <li>✔️ Pediatra</li>
+                        <li>✔️ Geriatra</li>
+                        <li class="pt-1 text-emerald-800">• Psicólogo e Nutri Orientativo</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-1.5 text-slate-800">
+                    <p><strong>• Mais de 30 especialidades</strong> mediante agendamento.</p>
+                    <p><strong>• Pronto atendimento psicológico</strong> das <strong>9h às 23h</strong>.</p>
+                    <p><strong>• Emissão de receitas e atestados digitais</strong>, quando cabível, com validade legal.</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-emerald-900 mb-1.5">O que pode ser resolvido pela telemedicina?</h4>
+                    <ul class="space-y-1 text-slate-700 font-medium pl-1">
+                        <li>✔️ Sintomas leves ou iniciais</li>
+                        <li>✔️ Dúvidas médicas</li>
+                        <li>✔️ Orientações de saúde</li>
+                        <li>✔️ Acompanhamento de tratamentos</li>
+                        <li>✔️ Renovação de receitas</li>
+                        <li>✔️ Encaminhamento para especialista quando necessário</li>
+                    </ul>
+                </div>
+
+                <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-xl p-3.5">
+                    <h4 class="font-bold text-emerald-900 mb-1">🔹 E quando o caso é mais complexo?</h4>
+                    <p class="text-slate-600">
+                        A telemedicina também orienta com responsabilidade. Se houver necessidade, o médico encaminha o paciente para exames, especialistas ou atendimento presencial.
+                    </p>
+                </div>
+            </div>
+
+            <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex justify-end">
+                <button type="button" onclick="toggleModal('benefits-modal', false)" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold py-2 px-5 rounded-xl transition">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Principal -->
+    <script>
+        const CONFIG = {
+            portalUrl: 'https://medqualividatelemedicina.lsxmedical.com/',
+            whatsappNumber: '5541999999999', // Substitua pelo número oficial (DDI + DDD + Número)
+            sheetsWebhookUrl: '', // URL do Google Apps Script Web App para alimentar a planilha principal
+            pixChave: '69.284.265/0001-65',
+            cartaoCreditoUrl: '' // Deixado em aberto conforme solicitado
+        };
+
+        let ultimoCnpjValidado = '';
+        let calculoEmpresarialAtual = { qtd: 0, unitario: 0, total: 0 };
+        let calculoIndividualAtual = { dependentes: 0, totalPessoas: 1, unitario: 24.90, total: 24.90 };
+
+        function formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function goToPortal() {
+            window.open(CONFIG.portalUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        function abrirWhatsApp(event, mensagem) {
+            if (event) event.preventDefault();
+            const texto = encodeURIComponent(mensagem || 'Olá! Gostaria de falar com a MedQualiVida.');
+            window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${texto}`, '_blank', 'noopener,noreferrer');
+        }
+
+        function toggleModal(id, show) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.toggle('hidden', !show);
+        }
+
+        function abrirTela(screenId) {
+            [
+                'screen-capa',
+                'screen-empresarial',
+                'screen-individual',
+                'screen-individual-cadastro',
+                'screen-individual-pagamento',
+                'screen-sucesso'
+            ].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ================= EMPRESARIAL =================
+        function abrirEmpresarial() {
+            resetarEtapasEmpresarial();
+            document.getElementById('cnpj-input').value = '';
+            document.getElementById('cnpj-status').textContent = 'Digite o CNPJ e clique em Validar CNPJ para liberar e preencher os dados da empresa.';
+            document.getElementById('cnpj-status').className = 'text-[11px] text-slate-500 mt-2';
+            abrirTela('screen-empresarial');
+        }
+
+        function resetarEtapasEmpresarial() {
+            ultimoCnpjValidado = '';
+            calculoEmpresarialAtual = { qtd: 0, unitario: 0, total: 0 };
+            document.getElementById('dados-empresa-box').classList.add('hidden');
+            document.getElementById('dados-corretos').checked = false;
+            document.getElementById('etapa-colaboradores').classList.add('hidden');
+            document.getElementById('bloco-pos-contratar-empresa').classList.add('hidden');
+            document.getElementById('qtd-colaboradores').value = '';
+            calcularValorEmpresarial();
+        }
+
+        function mascaraCNPJ(input) {
+            let v = input.value.replace(/\D/g, '').slice(0, 14);
+            v = v.replace(/^(\d{2})(\d)/, '$1.$2');
+            v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+            v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');
+            v = v.replace(/(\d{4})(\d)/, '$1-$2');
+            input.value = v;
+        }
+
+        function aoDigitarCNPJ(input) {
+            mascaraCNPJ(input);
+            const limpo = input.value.replace(/\D/g, '');
+            if (ultimoCnpjValidado && limpo !== ultimoCnpjValidado) {
+                resetarEtapasEmpresarial();
+                const statusEl = document.getElementById('cnpj-status');
+                statusEl.textContent = 'CNPJ alterado. Clique em Validar CNPJ para consultar os novos dados.';
+                statusEl.className = 'text-[11px] text-amber-700 font-medium mt-2';
+            }
+        }
+
+        async function buscarCNPJ() {
+            const cnpjLimpo = document.getElementById('cnpj-input').value.replace(/\D/g, '');
+            const statusEl = document.getElementById('cnpj-status');
+            const btn = document.getElementById('btn-buscar-cnpj');
+
+            if (cnpjLimpo.length !== 14) {
+                resetarEtapasEmpresarial();
+                statusEl.textContent = 'Informe um CNPJ válido com 14 dígitos para exibir os dados da empresa.';
+                statusEl.className = 'text-[11px] text-amber-700 font-medium mt-2';
+                return;
+            }
+
+            if (cnpjLimpo === ultimoCnpjValidado && !document.getElementById('dados-empresa-box').classList.contains('hidden')) {
+                return;
+            }
+
+            btn.disabled = true;
+            statusEl.textContent = 'Validando e consultando dados do CNPJ...';
+            statusEl.className = 'text-[11px] text-emerald-700 font-medium mt-2';
+
+            try {
+                const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpjLimpo}`);
+                if (!res.ok) throw new Error('CNPJ não encontrado');
+                const data = await res.json();
+
+                document.getElementById('emp-razao').value = data.razao_social || '';
+                document.getElementById('emp-fantasia').value = data.nome_fantasia || data.razao_social || '';
+
+                const tel = (data.ddd_telefone_1 || '').trim();
+                const email = (data.email || '').trim();
+                document.getElementById('emp-contato').value = [tel, email].filter(Boolean).join(' • ');
+
+                const partesEndereco = [
+                    data.descricao_tipo_de_logradouro,
+                    data.logradouro,
+                    data.numero,
+                    data.complemento,
+                    data.bairro
+                ].filter(Boolean);
+                document.getElementById('emp-endereco').value = partesEndereco.join(', ');
+                document.getElementById('emp-cidade').value = data.municipio || '';
+                document.getElementById('emp-uf').value = data.uf || '';
+                document.getElementById('emp-ramo').value = data.cnae_fiscal_descricao || '';
+
+                ultimoCnpjValidado = cnpjLimpo;
+                document.getElementById('dados-corretos').checked = false;
+                document.getElementById('etapa-colaboradores').classList.add('hidden');
+                document.getElementById('bloco-pos-contratar-empresa').classList.add('hidden');
+                document.getElementById('dados-empresa-box').classList.remove('hidden');
+
+                statusEl.textContent = 'CNPJ validado! Confira os dados exibidos abaixo e marque a confirmação.';
+                statusEl.className = 'text-[11px] text-emerald-700 font-semibold mt-2';
+            } catch (err) {
+                resetarEtapasEmpresarial();
+                statusEl.textContent = 'Não foi possível validar este CNPJ. Confira o número ou fale conosco no WhatsApp.';
+                statusEl.className = 'text-[11px] text-red-600 font-medium mt-2';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function alternarEtapaVidas() {
+            const confirmado = document.getElementById('dados-corretos').checked;
+            const box = document.getElementById('etapa-colaboradores');
+            if (confirmado) {
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+                document.getElementById('bloco-pos-contratar-empresa').classList.add('hidden');
+                document.getElementById('qtd-colaboradores').value = '';
+                calcularValorEmpresarial();
+            }
+        }
+
+        function obterValorUnitarioEmpresa(qtd) {
+            if (qtd >= 3 && qtd <= 100) return 14.90;
+            if (qtd >= 101 && qtd <= 500) return 13.90;
+            if (qtd >= 501 && qtd <= 1000) return 12.90;
+            if (qtd > 1000) return 10.90;
+            return 0;
+        }
+
+        function calcularValorEmpresarial() {
+            const raw = document.getElementById('qtd-colaboradores').value;
+            const resumo = document.getElementById('resumo-valor-empresa');
+            const aviso = document.getElementById('aviso-valor-pendente');
+            const erroMin = document.getElementById('erro-minimo-cnpj');
+            const btn = document.getElementById('btn-contratar-empresa');
+
+            document.getElementById('bloco-pos-contratar-empresa').classList.add('hidden');
+
+            if (raw === '' || raw === null) {
+                resumo.classList.add('hidden');
+                erroMin.classList.add('hidden');
+                aviso.classList.remove('hidden');
+                btn.disabled = true;
+                calculoEmpresarialAtual = { qtd: 0, unitario: 0, total: 0 };
+                return;
+            }
+
+            const qtd = parseInt(raw, 10);
+            if (isNaN(qtd) || qtd < 3) {
+                resumo.classList.add('hidden');
+                aviso.classList.add('hidden');
+                erroMin.classList.remove('hidden');
+                btn.disabled = true;
+                calculoEmpresarialAtual = { qtd: 0, unitario: 0, total: 0 };
+                return;
+            }
+
+            const unitario = obterValorUnitarioEmpresa(qtd);
+            const total = qtd * unitario;
+            calculoEmpresarialAtual = { qtd, unitario, total };
+
+            erroMin.classList.add('hidden');
+            aviso.classList.add('hidden');
+            resumo.classList.remove('hidden');
+
+            document.getElementById('faixa-unitaria-empresa').textContent = `Valor por colaborador: ${formatarMoeda(unitario)}`;
+            document.getElementById('badge-vidas').textContent = `${qtd} colaboradores`;
+            document.getElementById('valor-total-empresa').textContent = formatarMoeda(total);
+            document.getElementById('adesao-valor-texto').textContent = formatarMoeda(total);
+            btn.disabled = false;
+        }
+
+        function abrirFluxoPlanilhaEmpresa() {
+            if (calculoEmpresarialAtual.qtd < 3) return;
+            document.getElementById('bloco-pos-contratar-empresa').classList.remove('hidden');
+            document.getElementById('bloco-pos-contratar-empresa').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function baixarModeloPlanilha() {
+            const cabecalho = 'Nome Completo;CPF;Data de Nascimento;WhatsApp;E-mail;Cargo\n';
+            const exemplo = 'João da Silva;000.000.000-00;1990-05-15;(41) 99999-9999;joao@empresa.com.br;Analista\n';
+            const blob = new Blob(['\uFEFF' + cabecalho + exemplo], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'modelo_colaboradores_medqualivida.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        async function lerArquivoComoTexto(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsText(file, 'UTF-8');
+            });
+        }
+
+        async function finalizarEnvioEmpresarial(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('planilha-empresa');
+            const arquivo = fileInput.files && fileInput.files[0];
+            if (!arquivo) return;
+
+            const btn = document.getElementById('btn-enviar-empresa-final');
+            btn.disabled = true;
+
+            let conteudoPlanilha = '';
+            try {
+                conteudoPlanilha = await lerArquivoComoTexto(arquivo);
+            } catch (e) {
+                conteudoPlanilha = '';
+            }
+
+            const payload = {
+                tipoPlano: 'Empresarial',
+                cnpj: document.getElementById('cnpj-input').value.trim(),
+                razaoSocial: document.getElementById('emp-razao').value.trim(),
+                nomeFantasia: document.getElementById('emp-fantasia').value.trim(),
+                contato: document.getElementById('emp-contato').value.trim(),
+                endereco: document.getElementById('emp-endereco').value.trim(),
+                cidade: document.getElementById('emp-cidade').value.trim(),
+                uf: document.getElementById('emp-uf').value.trim(),
+                ramoAtividade: document.getElementById('emp-ramo').value.trim(),
+                numeroColaboradores: calculoEmpresarialAtual.qtd,
+                valorUnitario: calculoEmpresarialAtual.unitario,
+                valorMensalidade: calculoEmpresarialAtual.total,
+                valorAdesao: calculoEmpresarialAtual.total,
+                nomeArquivoPlanilha: arquivo.name,
+                conteudoPlanilha: conteudoPlanilha,
+                dataEnvio: new Date().toISOString()
+            };
+
+            if (CONFIG.sheetsWebhookUrl) {
+                try {
+                    await fetch(CONFIG.sheetsWebhookUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } catch (e) {
+                    console.error('Erro ao enviar para Google Sheets:', e);
+                }
+            }
+
+            btn.disabled = false;
+            document.getElementById('sucesso-titulo').textContent = 'Cadastro Empresarial Enviado!';
+            document.getElementById('sucesso-texto').innerHTML = `
+                <p><strong>Empresa:</strong> ${payload.razaoSocial} (${payload.cnpj})</p>
+                <p><strong>Colaboradores / Mensalidade e Adesão:</strong> ${payload.numeroColaboradores} vidas • <strong>${formatarMoeda(payload.valorMensalidade)}</strong></p>
+                <p>O plano será ativado em <strong>até 24h</strong> após o cadastro dos colaboradores e o pagamento da fatura da adesão. As próximas faturas vencem <strong>30 dias após a efetivação dos colaboradores</strong>.</p>
+            `;
+            abrirTela('screen-sucesso');
+        }
+
+        // ================= INDIVIDUAL =================
+        function atualizarResumoIndividual() {
+            const input = document.getElementById('qtd-dependentes');
+            const erroEl = document.getElementById('erro-max-pessoas');
+            const btn = document.getElementById('btn-quero-contratar-ind');
+
+            let dep = parseInt(input.value, 10);
+            if (isNaN(dep) || dep < 0) dep = 0;
+
+            if (dep > 9) {
+                erroEl.classList.remove('hidden');
+                btn.disabled = true;
+                return;
+            }
+
+            erroEl.classList.add('hidden');
+            btn.disabled = false;
+
+            const totalPessoas = 1 + dep;
+            const unitario = totalPessoas === 1 ? 24.90 : 19.90;
+            const total = totalPessoas * unitario;
+
+            calculoIndividualAtual = { dependentes: dep, totalPessoas, unitario, total };
+
+            document.getElementById('ind-resumo-vidas').textContent =
+                totalPessoas === 1
+                    ? '1 pessoa (Titular) • R$ 24,90'
+                    : `${totalPessoas} pessoas (Titular + ${dep} ${dep === 1 ? 'dependente' : 'dependentes'}) • ${formatarMoeda(unitario)}/pessoa`;
+            document.getElementById('ind-total-pessoas-badge').textContent = `${totalPessoas} de 10 pessoas`;
+            document.getElementById('ind-resumo-valor').textContent = formatarMoeda(total);
+        }
+
+        function abrirCadastroPessoasIndividual() {
+            atualizarResumoIndividual();
+            if (calculoIndividualAtual.totalPessoas > 10) return;
+
+            const container = document.getElementById('container-dependentes');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= calculoIndividualAtual.dependentes; i++) {
+                const card = document.createElement('div');
+                card.className = 'bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-2xs';
+                card.innerHTML = `
+                    <h3 class="text-xs sm:text-sm font-extrabold text-emerald-950 uppercase tracking-wide border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-user-plus text-emerald-600 mr-1"></i> Dados do Dependente ${i}
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nome Completo *</label>
+                            <input type="text" name="dep_nome_${i}" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Idade *</label>
+                            <input type="number" name="dep_idade_${i}" min="0" max="120" required class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">CPF *</label>
+                            <input type="text" name="dep_cpf_${i}" required maxlength="14" placeholder="000.000.000-00" oninput="mascaraCPF(this)" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">E-mail *</label>
+                            <input type="email" name="dep_email_${i}" required placeholder="dependente@email.com" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+
+            abrirTela('screen-individual-cadastro');
+        }
+
+        function mascaraCPF(input) {
+            let v = input.value.replace(/\D/g, '').slice(0, 11);
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            input.value = v;
+        }
+
+        function mascaraCEP(input) {
+            let v = input.value.replace(/\D/g, '').slice(0, 8);
+            v = v.replace(/^(\d{5})(\d)/, '$1-$2');
+            input.value = v;
+        }
+
+        async function consultarCEPTitular(cep) {
+            const limpo = cep.replace(/\D/g, '');
+            const statusEl = document.getElementById('cep-tit-status');
+            if (limpo.length !== 8) return;
+
+            statusEl.textContent = 'Consultando CEP...';
+            statusEl.className = 'text-[11px] text-emerald-700 font-medium';
+
+            try {
+                const res = await fetch(`https://viacep.com.br/ws/${limpo}/json/`);
+                const data = await res.json();
+                if (data.erro) throw new Error('CEP não encontrado');
+
+                document.getElementById('tit-endereco').value = data.logradouro || '';
+                document.getElementById('tit-bairro').value = data.bairro || '';
+                document.getElementById('tit-cidade').value = data.localidade || '';
+                document.getElementById('tit-uf').value = data.uf || '';
+                statusEl.textContent = 'Endereço localizado! Complete o número.';
+                statusEl.className = 'text-[11px] text-emerald-700 font-semibold';
+                document.getElementById('tit-numero').focus();
+            } catch (e) {
+                statusEl.textContent = 'CEP não encontrado. Preencha o endereço manualmente.';
+                statusEl.className = 'text-[11px] text-amber-700 font-medium';
+            }
+        }
+
+        function irParaPagamentoIndividual(event) {
+            event.preventDefault();
+            document.getElementById('pag-ind-resumo-pessoas').textContent =
+                `${calculoIndividualAtual.totalPessoas} ${calculoIndividualAtual.totalPessoas === 1 ? 'pessoa' : 'pessoas'} (${formatarMoeda(calculoIndividualAtual.unitario)}/pessoa)`;
+            document.getElementById('pag-ind-valor').textContent = formatarMoeda(calculoIndividualAtual.total);
+            document.getElementById('chave-pix-texto').textContent = CONFIG.pixChave;
+
+            const linkCartao = document.getElementById('link-cartao-credito');
+            if (CONFIG.cartaoCreditoUrl) {
+                linkCartao.href = CONFIG.cartaoCreditoUrl;
+                linkCartao.textContent = 'Abrir link de pagamento no cartão';
+            } else {
+                linkCartao.href = '#';
+                linkCartao.onclick = (e) => {
+                    e.preventDefault();
+                    alert('Link de cartão de crédito em aberto para configuração posterior.');
+                };
+            }
+
+            alternarMetodoPagamentoInd();
+            abrirTela('screen-individual-pagamento');
+        }
+
+        function alternarMetodoPagamentoInd() {
+            const metodo = document.querySelector('input[name="metodo_pag_ind"]:checked').value;
+            document.getElementById('box-pix-ind').classList.toggle('hidden', metodo !== 'PIX');
+            document.getElementById('box-cartao-ind').classList.toggle('hidden', metodo !== 'Cartao de Credito');
+        }
+
+        function copiarChavePix() {
+            navigator.clipboard?.writeText(CONFIG.pixChave).catch(() => {});
+            const msg = document.getElementById('pix-copiado-msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => msg.classList.add('hidden'), 2500);
+        }
+
+        function finalizarIndividualComComprovante(event) {
+            event.preventDefault();
+            const cpfTitular = document.getElementById('tit-cpf').value.trim();
+            const nomeTitular = document.getElementById('tit-nome').value.trim();
+            const comprovante = document.getElementById('comprovante-ind').files?.[0]?.name || 'Comprovante anexado';
+
+            document.getElementById('sucesso-titulo').textContent = 'Comprovante Enviado!';
+            document.getElementById('sucesso-texto').innerHTML = `
+                <p>Recebemos o cadastro de <strong>${nomeTitular}</strong> e o comprovante (<strong>${comprovante}</strong>).</p>
+                <p>Em <strong>até 24h</strong> o acesso à telemedicina estará liberado: basta entrar na tela inicial deste aplicativo e utilizar o <strong>CPF (${cpfTitular}) como usuário e CPF como senha</strong>.</p>
+                <p>Em caso de dúvidas, fale conosco pelo <strong>WhatsApp</strong> no rodapé do aplicativo.</p>
+            `;
+            abrirTela('screen-sucesso');
+        }
+
+        atualizarResumoIndividual();
+    </script>
+</body>
+</html>
